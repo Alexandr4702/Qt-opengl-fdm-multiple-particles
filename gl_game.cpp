@@ -55,39 +55,12 @@ public:
 #define numbr_part  200
 void GL_GAME::paintGL()
 {
-
-    qsrand(QTime::currentTime().msecsSinceStartOfDay());
-    static Parallelepiped * particles=new Parallelepiped[numbr_part] ;
-
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    static int cnt=0;
+    qsrand(QTime::currentTime().msecsSinceStartOfDay());
+    QVector <GL_GAME> Cube(10);
 
-    static float cnt=0;
-    if(cnt==0)
-    {
-        for(int i=0;i<numbr_part;i++)
-        {
-            particles[i].set_location(
-                        60.0f*(qrand()/2147483647.0f-0.5f),
-                        60.0f*(qrand()/2147483647.0f-0.5f),
-                        -90.0f*qrand()/2147483647.0f);
-            particles[i].set_size(
-                        2.0f*qrand()/2147483647.0f,
-                        2.0f*qrand()/2147483647.0f,
-                        2.0f* qrand()/2147483647.0f);
-            particles[i].set_angular_rate(10.0f*qrand()/2147483647.0f,qrand()/2147483647.0f,qrand()/2147483647.0f,qrand()/2147483647.0);
-        }
-    }
 
-    for (int i=0;i<numbr_part;i++ )
-    {
-        Model_View.setToIdentity();
-        Model_View.translate(particles[i].location.x(), particles[i].location.y(), particles[i].location.z());
-        Model_View.rotate(particles[i].angular_rate*cnt,particles[i].axis);
-        Model_View.scale(particles[i].size.x(), particles[i].size.y(), particles[i].size.z());
-        program.setUniformValue("mvp_matrix",Projection*Model_View);
-        Cube->drawCubeGeometry(&program);
-    }
 
     update();
     cnt++;
