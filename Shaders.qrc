@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>VS.vsh</file>
+        <file>FS.fsh</file>
+    </qresource>
+</RCC>
