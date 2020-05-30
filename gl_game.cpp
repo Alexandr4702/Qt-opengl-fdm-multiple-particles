@@ -59,6 +59,7 @@ void GL_GAME::paintGL()
     qsrand(QTime::currentTime().msecsSinceStartOfDay());
     static Parallelepiped * particles=new Parallelepiped[numbr_part] ;
 
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     static float cnt=0;
