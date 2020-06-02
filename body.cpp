@@ -15,6 +15,16 @@ void Body::setTorque(const QVector3D &value)
     torque = value;
 }
 
+void Body::init_geometry()
+{
+
+}
+
+void Body::draw()
+{
+
+}
+
 QVector3D Body::getForce() const
 {
     return force;

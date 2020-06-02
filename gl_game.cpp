@@ -5,10 +5,12 @@
 
 GL_GAME::GL_GAME(QWidget *parent) : QGLWidget(parent)
 {
+
 }
 
 GL_GAME::~GL_GAME()
 {
+
 }
 
 void GL_GAME::initializeGL()
@@ -18,49 +20,19 @@ void GL_GAME::initializeGL()
     qglClearColor(Qt::black);
     glEnable(GL_DEPTH_TEST);
     initShader();
-    Cube =new GL_CUBE();
     glEnable(GL_DEPTH_TEST);
 
+    world.add_body(new GL_CUBE());
 
 }
-class Parallelepiped
-{
-public:
-    QVector3D location;
-    QVector3D size;
-    QVector3D axis;
-    float angular_rate;
 
-    void set_location(float x,float y,float z)
-    {
-        location.setX(x);
-        location.setY(y);
-        location.setZ(z);
-    }
-    void set_size(float width,float heigh,float depth)
-    {
-        size.setX(width);
-        size.setY(heigh);
-        size.setZ(depth);
-    }
-    void set_angular_rate(float angular_rate_,float x,float y,float z)
-    {
-        angular_rate=angular_rate_;
-        axis.setX(x);
-        axis.setY(y);
-        axis.setZ(z);
-    }
-
-};
-#define numbr_part  200
 void GL_GAME::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     static int cnt=0;
     qsrand(QTime::currentTime().msecsSinceStartOfDay());
-    QVector <GL_GAME> Cube(10);
 
-
+    world.draw();
 
     update();
     cnt++;

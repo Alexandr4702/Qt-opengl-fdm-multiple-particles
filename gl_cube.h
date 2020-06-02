@@ -5,19 +5,27 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 
-class GL_CUBE: protected QOpenGLFunctions
+#include <QGLWidget>
+
+#include "body.h"
+
+class GL_CUBE: protected QOpenGLFunctions , public Body, public QGLWidget
 {
 public:
     GL_CUBE();
+    GL_CUBE(QOpenGLShaderProgram *program);
     virtual ~GL_CUBE();
 
-    void drawCubeGeometry(QOpenGLShaderProgram *program);
+    void draw()override;
+    void init_geometry ()override;
+
+    void init_shader();
 
 private:
-    void initCubeGeometry();
 
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
+    QOpenGLShaderProgram program;
 };
 
 #endif // GL_CUBE_H

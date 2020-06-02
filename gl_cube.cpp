@@ -1,5 +1,6 @@
 #include "gl_cube.h"
-
+#include <QGLWidget>
+#include <QtOpenGL>
 
 GL_CUBE::GL_CUBE():indexBuf(QOpenGLBuffer::IndexBuffer)
 {
@@ -11,7 +12,9 @@ GL_CUBE::GL_CUBE():indexBuf(QOpenGLBuffer::IndexBuffer)
     indexBuf.create();
 
     // Initializes cube geometry and transfers it to VBOs
-    initCubeGeometry();
+    init_geometry();
+
+    init_shader();
 }
 
 GL_CUBE::~GL_CUBE()
@@ -20,7 +23,7 @@ GL_CUBE::~GL_CUBE()
     indexBuf.destroy();
 }
 
-void GL_CUBE::initCubeGeometry()
+void GL_CUBE::init_geometry()
 {
     // For cube we would need only 8 vertices but we have to
     // duplicate vertex for each face because texture coordinate
@@ -81,15 +84,35 @@ void GL_CUBE::initCubeGeometry()
 
 //! [1]
     // Transfer vertex data to VBO 0
+
     arrayBuf.bind();
     arrayBuf.allocate(vertices, 24 * sizeof(QVector3D));
 
     // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(indices, 34 * sizeof(GLushort));
-//! [1]
+    //! [1]
 }
-void GL_CUBE::drawCubeGeometry(QOpenGLShaderProgram *program)
+
+void GL_CUBE::init_shader()
+{
+    // Compile vertex shader
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/VS.vsh"))
+        close();
+
+    // Compile fragment shader
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/FS.fsh"))
+        close();
+
+    // Link shader pipeline
+    if (!program.link())
+        close();
+
+    // Bind shader pipeline for use
+    if (!program.bind())
+        close();
+}
+void GL_CUBE::draw()
 {
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
@@ -99,9 +122,9 @@ void GL_CUBE::drawCubeGeometry(QOpenGLShaderProgram *program)
     quintptr offset = 0;
 
     // Tell OpenGL programmable pipeline how to locate vertex position data
-    int vertexLocation = program->attributeLocation("a_position");
-    program->enableAttributeArray(vertexLocation);
-    program->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
+    int vertexLocation = program.attributeLocation("a_position");
+    program.enableAttributeArray(vertexLocation);
+    program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);

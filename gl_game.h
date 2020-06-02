@@ -4,6 +4,7 @@
 #include <QGLWidget>
 #include <QtOpenGL>
 #include "gl_cube.h"
+#include "world.h"
 
 class GL_GAME: public QGLWidget, protected QOpenGLFunctions
 {
@@ -20,6 +21,7 @@ private:
     QMatrix4x4 Model_View;
     QOpenGLShaderProgram program;
     GL_CUBE* Cube;
+    World world;
 
 };
 

@@ -2,6 +2,10 @@
 #define BODY_H
 #include <QVector3D>
 
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+
 class Body
 {
 public:
@@ -26,10 +30,6 @@ public:
 
     void set_location(const QVector3D& location);
     void set_orenatation(const QQuaternion& oreantation);
-
-
-
-
     double getDensity() const;
     void setDensity(double value);
     double getVolume() const;
@@ -48,6 +48,10 @@ public:
     void setForce(const QVector3D &value);
     QVector3D getTorque() const;
     void setTorque(const QVector3D &value);
+
+public:
+    virtual void init_geometry();
+    virtual void draw();
 };
 
 #endif // BODY_H
