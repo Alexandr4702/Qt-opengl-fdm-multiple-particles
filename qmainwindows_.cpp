@@ -9,6 +9,5 @@ Qmainwindows_::Qmainwindows_()
 }
 void Qmainwindows_::resizeEvent(QResizeEvent *event)
 {
-    event->size();
     game->setGeometry(QRect(0, 0,event->size().width()*ratio,event->size().height()));
 }

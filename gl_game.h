@@ -6,7 +6,7 @@
 #include "gl_cube.h"
 #include "world.h"
 
-class GL_GAME: public QGLWidget, protected QOpenGLFunctions
+class GL_GAME: public QGLWidget, public QOpenGLFunctions
 {
 public:
     GL_GAME(QWidget *parent);
@@ -17,11 +17,8 @@ protected:
     void paintGL();
     void initShader();
 private:
-    QMatrix4x4 Projection;
-    QMatrix4x4 Model_View;
-    QOpenGLShaderProgram program;
     GL_CUBE* Cube;
-    World world;
+    World* world;
 
 };
 

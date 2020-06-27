@@ -1,6 +1,6 @@
 #include "body.h"
 
-Body::Body()
+Body::Body(QGLContext* ctx_=0):ctx(ctx_)
 {
 
 }
@@ -23,6 +23,16 @@ void Body::init_geometry()
 void Body::draw()
 {
 
+}
+
+void Body::set_projection(QMatrix4x4 *)
+{
+
+}
+
+void Body::set_context(QGLContext *ctx_)
+{
+    ctx=ctx_;
 }
 
 QVector3D Body::getForce() const

@@ -5,11 +5,12 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
+#include <QGLContext>
 
 class Body
 {
 public:
-    Body();
+    Body(QGLContext* ctx_);
     QVector3D position;
     QQuaternion orenation();
 
@@ -52,6 +53,10 @@ public:
 public:
     virtual void init_geometry();
     virtual void draw();
+    virtual void set_projection(QMatrix4x4*);
+    void set_context(QGLContext* ctx_);
+    QGLContext* ctx=nullptr;
+
 };
 
 #endif // BODY_H

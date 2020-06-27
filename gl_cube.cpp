@@ -2,11 +2,23 @@
 #include <QGLWidget>
 #include <QtOpenGL>
 
-GL_CUBE::GL_CUBE():indexBuf(QOpenGLBuffer::IndexBuffer)
+GL_CUBE::GL_CUBE():indexBuf(QOpenGLBuffer::IndexBuffer),Body((QGLContext*)(12))
 {
 
-    initializeOpenGLFunctions();
 
+
+}
+
+GL_CUBE::~GL_CUBE()
+{
+    arrayBuf.destroy();
+    indexBuf.destroy();
+}
+
+GL_CUBE::GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_):Body(ctx_),
+    program(program)
+{
+    ctx->makeCurrent();
     // Generate 2 VBOs
     arrayBuf.create();
     indexBuf.create();
@@ -17,11 +29,6 @@ GL_CUBE::GL_CUBE():indexBuf(QOpenGLBuffer::IndexBuffer)
     init_shader();
 }
 
-GL_CUBE::~GL_CUBE()
-{
-    arrayBuf.destroy();
-    indexBuf.destroy();
-}
 
 void GL_CUBE::init_geometry()
 {
@@ -94,26 +101,55 @@ void GL_CUBE::init_geometry()
     //! [1]
 }
 
+void GL_CUBE::set_projection(QMatrix4x4 * projection_)
+{
+    Projection=projection_;
+}
+
 void GL_CUBE::init_shader()
 {
-    // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/VS.vsh"))
-        close();
 
-    // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/FS.fsh"))
-        close();
-
-    // Link shader pipeline
-    if (!program.link())
-        close();
-
-    // Bind shader pipeline for use
-    if (!program.bind())
-        close();
 }
 void GL_CUBE::draw()
 {
+
+    //--------------------------------------------------------------
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    glFrustum(-1.0,1.0, -1.0, 1.0, 1.0, 20.0);
+//    //--------------------------------------------------------------
+//    glMatrixMode(GL_MODELVIEW);
+//    glLoadIdentity();
+//    glTranslatef(0.0,0.0,-2.0);
+//    glRotatef(20,1,0.5,0);
+
+
+//    glBegin(GL_LINES);
+//    glColor3f(1.0, 0.0, 0.0);
+//    glVertex3f( 0.0,  0.0, 0.0);
+//    glVertex3f(1.0,0.0,0.0);
+//    glColor3f(0.0, 1.0, 0.0);
+//    glVertex3f( 0.0,  0.0, 0.0);
+//    glVertex3f(0.0,1.0,0.0);
+//    glColor3f(0.0, 0.0, 1.0);
+//    glVertex3f( 0.0,  0.0, 0.0);
+//    glVertex3f(0.0,0.0,1.0);
+//    glEnd();
+//return;
+
+    position=QVector3D(0,0,-5);
+
+
+    Model_View.setToIdentity();
+    Model_View.translate(position.x(),position.y(),position.z());
+//    Model_View.rotate();
+    Model_View.scale(1,1,1);
+
+    QMatrix4x4 test=*Projection*Model_View;
+
+
+    program->setUniformValue("mvp_matrix",test);
+
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
     indexBuf.bind();
@@ -122,9 +158,9 @@ void GL_CUBE::draw()
     quintptr offset = 0;
 
     // Tell OpenGL programmable pipeline how to locate vertex position data
-    int vertexLocation = program.attributeLocation("a_position");
-    program.enableAttributeArray(vertexLocation);
-    program.setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
+    int vertexLocation = program->attributeLocation("a_position");
+    program->enableAttributeArray(vertexLocation);
+    program->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
