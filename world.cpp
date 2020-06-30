@@ -3,7 +3,6 @@
 World::World(QGLContext* ctx)
 {
     ctx->makeCurrent();
-    initializeOpenGLFunctions();
     init_pos_oren_shader();
     Projection.setToIdentity();
     Projection.perspective(90,1.5,1,90);

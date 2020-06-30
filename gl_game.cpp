@@ -16,7 +16,6 @@ GL_GAME::~GL_GAME()
 void GL_GAME::initializeGL()
 {
 
-    initializeOpenGLFunctions();
 
     qglClearColor(Qt::black);
     glEnable(GL_DEPTH_TEST);

@@ -8,7 +8,7 @@
 #include <QOpenGLFunctions>
 #include <math.h>
 
-class World:public QGLWidget,protected QOpenGLFunctions
+class World:public QGLWidget
 {
 public:
     World(QGLContext * ctx);

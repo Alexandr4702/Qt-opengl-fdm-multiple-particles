@@ -6,7 +6,7 @@
 #include "gl_cube.h"
 #include "world.h"
 
-class GL_GAME: public QGLWidget, public QOpenGLFunctions
+class GL_GAME: public QGLWidget
 {
 public:
     GL_GAME(QWidget *parent);
