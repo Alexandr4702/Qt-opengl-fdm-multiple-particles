@@ -12,7 +12,6 @@
 class GL_CUBE: public Body, public QGLWidget
 {
 public:
-    GL_CUBE();
     GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_);
     virtual ~GL_CUBE();
 

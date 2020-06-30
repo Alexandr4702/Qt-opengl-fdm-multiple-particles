@@ -2,12 +2,7 @@
 #include <QGLWidget>
 #include <QtOpenGL>
 
-GL_CUBE::GL_CUBE():indexBuf(QOpenGLBuffer::IndexBuffer),Body((QGLContext*)(12))
-{
 
-
-
-}
 
 GL_CUBE::~GL_CUBE()
 {
@@ -15,7 +10,7 @@ GL_CUBE::~GL_CUBE()
     indexBuf.destroy();
 }
 
-GL_CUBE::GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_):Body(ctx_),
+GL_CUBE::GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_):Body(ctx_),indexBuf(QOpenGLBuffer::IndexBuffer),
     program(program)
 {
     ctx->makeCurrent();
@@ -112,30 +107,6 @@ void GL_CUBE::init_shader()
 }
 void GL_CUBE::draw()
 {
-
-    //--------------------------------------------------------------
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    glFrustum(-1.0,1.0, -1.0, 1.0, 1.0, 20.0);
-//    //--------------------------------------------------------------
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-//    glTranslatef(0.0,0.0,-2.0);
-//    glRotatef(20,1,0.5,0);
-
-
-//    glBegin(GL_LINES);
-//    glColor3f(1.0, 0.0, 0.0);
-//    glVertex3f( 0.0,  0.0, 0.0);
-//    glVertex3f(1.0,0.0,0.0);
-//    glColor3f(0.0, 1.0, 0.0);
-//    glVertex3f( 0.0,  0.0, 0.0);
-//    glVertex3f(0.0,1.0,0.0);
-//    glColor3f(0.0, 0.0, 1.0);
-//    glVertex3f( 0.0,  0.0, 0.0);
-//    glVertex3f(0.0,0.0,1.0);
-//    glEnd();
-//return;
 
     position=QVector3D(0,0,-5);
 

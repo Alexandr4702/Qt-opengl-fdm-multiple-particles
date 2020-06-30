@@ -5,9 +5,10 @@
 #include <QVector>
 
 #include <QGLWidget>
+#include <QOpenGLFunctions>
 #include <math.h>
 
-class World:public QGLWidget
+class World:public QGLWidget,protected QOpenGLFunctions
 {
 public:
     World(QGLContext * ctx);

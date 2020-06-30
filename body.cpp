@@ -1,6 +1,6 @@
 #include "body.h"
 
-Body::Body(QGLContext* ctx_=0):ctx(ctx_)
+Body::Body(QGLContext* ctx_):ctx(ctx_)
 {
 
 }
