@@ -5,26 +5,39 @@ World::World(QGLContext* ctx)
     ctx->makeCurrent();
     init_pos_oren_shader();
     Projection.setToIdentity();
-    Projection.perspective(90,1.5,1,90);
+    Projection.perspective(90,1.0,1,90);
 
 }
 
-void World::update(float dt)
+void World::update(float dt_)
 {
     for(Body* body:bodies)
     {
-
+                body->setPosition(QVector3D(0,0,-20));
+                body->set_orenatation(QQuaternion(time,0.0f,0.0f,1.0f));
     }
+    time+=dt_;
+
+}
+
+void World::update()
+{
+    for(Body* body:bodies)
+    {
+                body->setPosition(QVector3D(0,0,-10));
+                body->set_orenatation(QQuaternion(20,1.0f,0.0f,0.0f));
+    }
+    time+=dt;
 }
 
 void World::draw()
 {
+    update();
 
     for(Body* body:bodies)
     {
         body->draw();
     }
-    time+=dt;
 }
 
 void World::draw(QMatrix4x4 &projection_matrix)
@@ -39,21 +52,20 @@ void World::init_pos_oren_shader()
 {
 
     if (!shader_position_orentation_programm.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/VS.vsh"))
-        close();
-
+        exit(1);
     // Compile fragment shader
     if (!shader_position_orentation_programm.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/FS.fsh"))
-        close();
+        exit(1);
 
     // Link shader pipeline
     if (!shader_position_orentation_programm.link())
-        close();
+        exit(1);
+
 
     // Bind shader pipeline for use
     if (!shader_position_orentation_programm.bind())
-        close();
+        exit(1);
 
-//    qDebug()<<shader_position_orentation_programm.;
 }
 
 QMatrix4x4* World::getProjection()

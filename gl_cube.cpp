@@ -107,14 +107,14 @@ void GL_CUBE::init_shader()
 }
 void GL_CUBE::draw()
 {
-
-    position=QVector3D(0,0,-5);
-
+    static float time=0.0f;
+    set_orenatation(QQuaternion(time,0,0,1));
+    time+=0.01;
 
     Model_View.setToIdentity();
-    Model_View.translate(position.x(),position.y(),position.z());
-//    Model_View.rotate();
-    Model_View.scale(1,1,1);
+    Model_View.translate(position);
+    Model_View.rotate(orenation);
+
 
     QMatrix4x4 test=*Projection*Model_View;
 

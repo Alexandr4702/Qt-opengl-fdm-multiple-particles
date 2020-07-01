@@ -8,7 +8,7 @@
 #include <QOpenGLFunctions>
 #include <math.h>
 
-class World:public QGLWidget
+class World
 {
 public:
     World(QGLContext * ctx);
@@ -20,7 +20,8 @@ public:
      *
      *
     */
-    void update(float dt);
+    void update(float dt_);
+    void update();
     void draw();
     void draw(QMatrix4x4 & projection_matrix);
     void init_pos_oren_shader();

@@ -1,8 +1,9 @@
 #ifndef BODY_H
 #define BODY_H
 #include <QVector3D>
+#include <QQuaternion>
 
-#include <QOpenGLFunctions>
+
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 #include <QGLContext>
@@ -12,7 +13,7 @@ class Body
 public:
     Body(QGLContext* ctx_);
     QVector3D position;
-    QQuaternion orenation();
+    QQuaternion orenation;
 
     QVector3D linear_velocity;
     QVector3D angular_velocity;
@@ -49,6 +50,8 @@ public:
     void setForce(const QVector3D &value);
     QVector3D getTorque() const;
     void setTorque(const QVector3D &value);
+    QVector3D getPosition() const;
+    void setPosition(const QVector3D &value);
 
 public:
     virtual void init_geometry();
@@ -56,6 +59,7 @@ public:
     virtual void set_projection(QMatrix4x4*);
     void set_context(QGLContext* ctx_);
     QGLContext* ctx=nullptr;
+
 
 };
 

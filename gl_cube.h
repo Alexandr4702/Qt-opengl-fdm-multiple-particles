@@ -9,7 +9,7 @@
 
 #include "body.h"
 
-class GL_CUBE: public Body, public QGLWidget
+class GL_CUBE: public Body
 {
 public:
     GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_);

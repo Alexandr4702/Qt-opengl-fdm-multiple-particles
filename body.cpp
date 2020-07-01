@@ -5,6 +5,21 @@ Body::Body(QGLContext* ctx_):ctx(ctx_)
 
 }
 
+void Body::set_orenatation(const QQuaternion &oreantation)
+{
+    orenation=oreantation;
+}
+
+QVector3D Body::getPosition() const
+{
+    return position;
+}
+
+void Body::setPosition(const QVector3D &value)
+{
+    position = value;
+}
+
 QVector3D Body::getTorque() const
 {
     return torque;
