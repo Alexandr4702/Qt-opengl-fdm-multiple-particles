@@ -11,10 +11,10 @@ World::World(QGLContext* ctx)
 
 void World::update(float dt_)
 {
-    for(Body* body:bodies)
+    for(Body body:bodies)
     {
-                body->setPosition(QVector3D(0,0,-20));
-                body->set_orenatation(QQuaternion(time,0.0f,0.0f,1.0f));
+                body.setPosition(QVector3D(0,0,-20));
+                body.set_orenatation(QQuaternion(time,0.0f,0.0f,1.0f));
 
     }
     time+=dt_;
@@ -23,11 +23,11 @@ void World::update(float dt_)
 
 void World::update()
 {
-    for(Body* body:bodies)
+    for(Body body:bodies)
     {
-                body->setPosition(QVector3D(0,0,-10));
-                body->set_orenatation(QQuaternion(time*1000,1.0f,0.0f,0.0f));
-                body->setScale(QVector3D(1,1,2));
+                body.setPosition(QVector3D(0,0,-10));
+                body.set_orenatation(QQuaternion(time*1000,1.0f,0.0f,0.0f));
+                body.setScale(QVector3D(1,1,2));
     }
     time+=dt;
 }
@@ -36,9 +36,9 @@ void World::draw()
 {
     update();
 
-    for(Body* body:bodies)
+    for(Body body:bodies)
     {
-        body->draw();
+        body.draw();
     }
 }
 
@@ -46,9 +46,9 @@ void World::draw(QMatrix4x4 &projection_matrix)
 {
     Q_UNUSED(projection_matrix);
 
-    for(Body* body:bodies)
+    for(Body body:bodies)
     {
-        body->draw();
+        body.draw();
     }
 }
 
@@ -86,8 +86,14 @@ QOpenGLShaderProgram* World::getShader_position_orentation_programm()
 
 
 
-void World::add_body(Body * body)
+void World::add_body(Body & body)
 {
-    body->set_projection(&Projection);
+    body.set_projection(&Projection);
+    bodies.push_back(body);
+}
+
+void World::add_body(Body && body)
+{
+    body.set_projection(&Projection);
     bodies.push_back(body);
 }

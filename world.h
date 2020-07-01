@@ -12,7 +12,8 @@ class World
 {
 public:
     World(QGLContext * ctx);
-    void add_body( Body*);
+    void add_body(Body && body);
+    void add_body( Body&);
     void add_forces(float);
     /*brief:
      *param:
@@ -27,7 +28,7 @@ public:
     void init_pos_oren_shader();
 public:
     QVector<float> forces;
-    QVector<Body*> bodies;
+    QVector<Body> bodies;
     QMatrix4x4 Projection;
     float dt=0.01;
     float time=0.0f;

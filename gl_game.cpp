@@ -21,23 +21,16 @@ void GL_GAME::initializeGL()
     glEnable(GL_DEPTH_TEST);
     world=new World(context());
 
-
-    world->add_body(new GL_CUBE(
-                        &world->shader_position_orentation_programm,context()));
+//    GL_CUBE cube(&world->shader_position_orentation_programm,context());
+    world->add_body(GL_CUBE(&world->shader_position_orentation_programm,context()));
 
 }
 
 void GL_GAME::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    static int cnt=0;
-    qsrand(QTime::currentTime().msecsSinceStartOfDay());
-
-
     world->draw();
-
     update();
-    cnt++;
 }
 
 
