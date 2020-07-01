@@ -14,22 +14,78 @@ GL_CUBE::GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_):Body(ctx_),inde
     program(program)
 {
     ctx->makeCurrent();
-    // Generate 2 VBOs
     arrayBuf.create();
     indexBuf.create();
 
-    // Initializes cube geometry and transfers it to VBOs
     init_geometry();
+}
 
-    init_shader();
+GL_CUBE::GL_CUBE(const GL_CUBE &other):Body(other),indexBuf(QOpenGLBuffer::IndexBuffer)
+{
+    ctx->makeCurrent();
+
+    arrayBuf.create();
+    indexBuf.create();
+
+    arrayBuf=other.arrayBuf;
+    indexBuf=other.indexBuf;
+    Model_View=other.Model_View;
+    Projection=other.Projection;
+    program=other.program;
+}
+
+GL_CUBE::GL_CUBE(GL_CUBE &&other) noexcept
+    :Body(other)
+{
+    ctx->makeCurrent();
+
+    arrayBuf.create();
+    indexBuf.create();
+
+    arrayBuf=other.arrayBuf;
+    indexBuf=other.indexBuf;
+    Model_View=other.Model_View;
+    Projection=other.Projection;
+    program=other.program;
+
+    other.arrayBuf.destroy();
+    other.indexBuf.destroy();
+}
+
+GL_CUBE &GL_CUBE::operator=(const GL_CUBE &other)
+{
+    if (this == &other)
+        return *this;
+    arrayBuf=other.arrayBuf;
+    indexBuf=other.indexBuf;
+    Model_View=other.Model_View;
+    Projection=other.Projection;
+    program=other.program;
+
+    return *this;
+}
+
+GL_CUBE &GL_CUBE::operator=(GL_CUBE &&other) noexcept
+{
+    if (this == &other)
+        return *this;
+    arrayBuf=other.arrayBuf;
+    indexBuf=other.indexBuf;
+    Model_View=other.Model_View;
+    Projection=other.Projection;
+    program=other.program;
+
+
+    other.arrayBuf.destroy();
+    other.indexBuf.destroy();
+
+    return *this;
 }
 
 
 void GL_CUBE::init_geometry()
 {
-    // For cube we would need only 8 vertices but we have to
-    // duplicate vertex for each face because texture coordinate
-    // is different.
+
     QVector3D vertices[] = {
         // Vertex data for face 0
         {QVector3D(-1.0f, -1.0f,  1.0f)},  // v0
@@ -68,13 +124,6 @@ void GL_CUBE::init_geometry()
         {QVector3D( 1.0f,  1.0f, -1.0f)}  // v23
     };
 
-    // Indices for drawing cube faces using triangle strips.
-    // Triangle strips can be connected by duplicating indices
-    // between the strips. If connecting strips have opposite
-    // vertex order then last index of the first strip and first
-    // index of the second strip needs to be duplicated. If
-    // connecting strips have same vertex order then only last
-    // index of the first strip needs to be duplicated.
     GLushort indices[] = {
          0,  1,  2,  3,  3,     // Face 0 - triangle strip ( v0,  v1,  v2,  v3)
          4,  4,  5,  6,  7,  7, // Face 1 - triangle strip ( v4,  v5,  v6,  v7)
@@ -85,12 +134,10 @@ void GL_CUBE::init_geometry()
     };
 
 //! [1]
-    // Transfer vertex data to VBO 0
 
     arrayBuf.bind();
     arrayBuf.allocate(vertices, 24 * sizeof(QVector3D));
 
-    // Transfer index data to VBO 1
     indexBuf.bind();
     indexBuf.allocate(indices, 34 * sizeof(GLushort));
     //! [1]
@@ -101,41 +148,28 @@ void GL_CUBE::set_projection(QMatrix4x4 * projection_)
     Projection=projection_;
 }
 
-void GL_CUBE::init_shader()
-{
 
-}
 void GL_CUBE::draw()
 {
-    static float time=0.0f;
-    set_orenatation(QQuaternion(time,0,0,1));
-    time+=0.01;
 
     Model_View.setToIdentity();
     Model_View.translate(position);
-    Model_View.rotate(orenation);
-
+    Model_View.rotate(orenation.scalar(),orenation.vector());
+    Model_View.scale(scale);
 
     QMatrix4x4 test=*Projection*Model_View;
 
-    qDebug()<<Model_View;
-
-
     program->setUniformValue("mvp_matrix",test);
 
-    // Tell OpenGL which VBOs to use
     arrayBuf.bind();
     indexBuf.bind();
 
-    // Offset for position
     quintptr offset = 0;
 
-    // Tell OpenGL programmable pipeline how to locate vertex position data
     int vertexLocation = program->attributeLocation("a_position");
     program->enableAttributeArray(vertexLocation);
     program->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
-    // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
 }
 

@@ -12,8 +12,13 @@ class Body
 {
 public:
     Body(QGLContext* ctx_);
+    Body(const Body& other);
+    Body(Body&& other)noexcept;
+    Body& operator=(const Body & other);
+    Body& operator=(Body&& other)noexcept;
     QVector3D position;
     QQuaternion orenation;
+    QVector3D scale;
 
     QVector3D linear_velocity;
     QVector3D angular_velocity;
@@ -52,13 +57,15 @@ public:
     void setTorque(const QVector3D &value);
     QVector3D getPosition() const;
     void setPosition(const QVector3D &value);
-
+    QVector3D getScale() const;
+    void setScale(const QVector3D &value);
 public:
     virtual void init_geometry();
     virtual void draw();
     virtual void set_projection(QMatrix4x4*);
     void set_context(QGLContext* ctx_);
     QGLContext* ctx=nullptr;
+
 
 
 };

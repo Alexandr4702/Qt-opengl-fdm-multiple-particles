@@ -15,6 +15,7 @@ void World::update(float dt_)
     {
                 body->setPosition(QVector3D(0,0,-20));
                 body->set_orenatation(QQuaternion(time,0.0f,0.0f,1.0f));
+
     }
     time+=dt_;
 
@@ -25,7 +26,8 @@ void World::update()
     for(Body* body:bodies)
     {
                 body->setPosition(QVector3D(0,0,-10));
-                body->set_orenatation(QQuaternion(20,1.0f,0.0f,0.0f));
+                body->set_orenatation(QQuaternion(time*1000,1.0f,0.0f,0.0f));
+                body->setScale(QVector3D(1,1,2));
     }
     time+=dt;
 }
@@ -42,6 +44,8 @@ void World::draw()
 
 void World::draw(QMatrix4x4 &projection_matrix)
 {
+    Q_UNUSED(projection_matrix);
+
     for(Body* body:bodies)
     {
         body->draw();
@@ -53,16 +57,13 @@ void World::init_pos_oren_shader()
 
     if (!shader_position_orentation_programm.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/VS.vsh"))
         exit(1);
-    // Compile fragment shader
     if (!shader_position_orentation_programm.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/FS.fsh"))
         exit(1);
 
-    // Link shader pipeline
     if (!shader_position_orentation_programm.link())
         exit(1);
 
 
-    // Bind shader pipeline for use
     if (!shader_position_orentation_programm.bind())
         exit(1);
 

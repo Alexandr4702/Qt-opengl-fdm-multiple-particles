@@ -13,13 +13,15 @@ class GL_CUBE: public Body
 {
 public:
     GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_);
+    GL_CUBE(const GL_CUBE& other);
+    GL_CUBE(GL_CUBE&& other)noexcept;
+    GL_CUBE& operator=(const GL_CUBE& other);
+    GL_CUBE& operator=(GL_CUBE&& other)noexcept;
     virtual ~GL_CUBE();
 
     void draw()override;
     void init_geometry ()override;
     void set_projection(QMatrix4x4*)override;
-
-    void init_shader();
 
 private:
 

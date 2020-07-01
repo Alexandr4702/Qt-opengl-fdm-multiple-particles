@@ -5,6 +5,113 @@ Body::Body(QGLContext* ctx_):ctx(ctx_)
 
 }
 
+Body::Body(const Body &other)
+{
+    position=other.position;
+    orenation=other.orenation;
+    scale=other.scale;
+
+    linear_velocity=other.linear_velocity;
+    angular_velocity=other.angular_velocity;
+
+
+    angular_acceleration=other.angular_acceleration;
+    linear_acclereation=other.linear_acclereation;
+
+    force=other.force;
+    torque=other.torque;
+
+    density=other.density;
+    Volume=other.Volume;
+    mass=other.mass;
+    ctx=other.ctx;
+}
+
+Body::Body(Body &&other) noexcept
+{
+    position=other.position;
+    orenation=other.orenation;
+    scale=other.scale;
+
+    linear_velocity=other.linear_velocity;
+    angular_velocity=other.angular_velocity;
+
+
+    angular_acceleration=other.angular_acceleration;
+    linear_acclereation=other.linear_acclereation;
+
+    force=other.force;
+    torque=other.torque;
+
+    density=other.density;
+    Volume=other.Volume;
+    mass=other.mass;
+    ctx=other.ctx;
+
+}
+
+Body &Body::operator=(const Body &other)
+{
+    if (this == &other)
+        return *this;
+    position=other.position;
+    orenation=other.orenation;
+    scale=other.scale;
+
+    linear_velocity=other.linear_velocity;
+    angular_velocity=other.angular_velocity;
+
+
+    angular_acceleration=other.angular_acceleration;
+    linear_acclereation=other.linear_acclereation;
+
+    force=other.force;
+    torque=other.torque;
+
+    density=other.density;
+    Volume=other.Volume;
+    mass=other.mass;
+    ctx=other.ctx;
+    return *this;
+}
+
+Body &Body::operator=(Body &&other) noexcept
+{
+    if (this == &other)
+        return *this;
+    position=other.position;
+    orenation=other.orenation;
+    scale=other.scale;
+
+    linear_velocity=other.linear_velocity;
+    angular_velocity=other.angular_velocity;
+
+
+    angular_acceleration=other.angular_acceleration;
+    linear_acclereation=other.linear_acclereation;
+
+    force=other.force;
+    torque=other.torque;
+
+    density=other.density;
+    Volume=other.Volume;
+    mass=other.mass;
+    ctx=other.ctx;
+    return *this;
+
+}
+
+QVector3D Body::getScale() const
+{
+    return scale;
+}
+
+void Body::setScale(const QVector3D &value)
+{
+    scale = value;
+}
+
+
 void Body::set_orenatation(const QQuaternion &oreantation)
 {
     orenation=oreantation;
