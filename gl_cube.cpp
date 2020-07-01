@@ -118,6 +118,8 @@ void GL_CUBE::draw()
 
     QMatrix4x4 test=*Projection*Model_View;
 
+    qDebug()<<test;
+
 
     program->setUniformValue("mvp_matrix",test);
 
