@@ -21,8 +21,9 @@ void GL_GAME::initializeGL()
     glEnable(GL_DEPTH_TEST);
     world=new World(context());
 
-//    GL_CUBE cube(&world->shader_position_orentation_programm,context());
-    world->add_body(GL_CUBE(&world->shader_position_orentation_programm,context()));
+    GL_CUBE cube(&world->shader_position_orentation_programm,context());
+
+    world->add_body(cube);
 
 }
 
