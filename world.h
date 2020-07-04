@@ -34,7 +34,7 @@ public:
     QVector<float> forces;
     QVector<Body*> bodies;
     QMatrix4x4 Projection;
-    float dt=0.001;
+    float dt=0.01;
     float time=0.0f;
     QOpenGLShaderProgram shader_position_orentation_programm;
     QOpenGLShaderProgram* getShader_position_orentation_programm() ;

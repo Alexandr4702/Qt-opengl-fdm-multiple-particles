@@ -33,6 +33,7 @@ void GL_GAME::initializeGL()
     for (int i=0;i<20 ;i++ ) {
         ptr=new GL_CUBE(&world->shader_position_orentation_programm,context());
         ptr->setPosition(QVector3D(-i*5,-3,-10));
+//        ptr->forces.push_back(QVector3D(0,-20,0));
         world->add_body(ptr);
 
     }
@@ -40,6 +41,7 @@ void GL_GAME::initializeGL()
     for (int i=0;i<20 ;i++ ) {
         ptr=new GL_CUBE(&world->shader_position_orentation_programm,context());
         ptr->setPosition(QVector3D(-i*5,3,-10));
+//        ptr->forces.push_back(QVector3D(0,-20,0));
         world->add_body(ptr);
 
     }
@@ -47,6 +49,7 @@ void GL_GAME::initializeGL()
     for (int i=0;i<20 ;i++ ) {
         ptr=new GL_CUBE(&world->shader_position_orentation_programm,context());
         ptr->setPosition(QVector3D(-i*5,3,-5));
+//        ptr->forces.push_back(QVector3D(0,-20,0));
         world->add_body(ptr);
     }
 
@@ -54,6 +57,7 @@ void GL_GAME::initializeGL()
     for (int i=0;i<20 ;i++ ) {
         ptr=new GL_CUBE(&world->shader_position_orentation_programm,context());
         ptr->setPosition(QVector3D(-i*5,-3,-5));
+//        ptr->forces.push_back(QVector3D(0,-20,0));
         world->add_body(ptr);
     }
 

@@ -16,11 +16,22 @@ void World::update(float dt_)
         body->temporary_forces.clear();
 
 
+
         for (Body* body_test:bodies )
         {
                 QVector3D r=(body->position-body_test->position);
-                body->temporary_forces.push_back(-body->mass*body_test->mass*r);
+                if(r.length()==0)
+                {
+                    continue;;
+                }
+                QVector3D F=-body->mass*body_test->mass*r;
+                body->temporary_forces.push_back(F/r.length()/r.length());
+//                qDebug()<<F/r.length()<<r.length()<<r;
         }
+//        if(body->position.y()<-5)
+//        {
+//            body->linear_velocity=-body->linear_velocity;
+//        }
 
         body->force_summ=QVector3D(0,0,0);
 
@@ -56,7 +67,7 @@ void World::update(float dt_)
 
     }
     cam.setToIdentity();
-    cam.lookAt(QVector3D(0,0,0),bodies[0]->position,QVector3D(0,1,0));
+    cam.lookAt(QVector3D(0,0,20),bodies[0]->position,QVector3D(0,1,0));
 
 
     time+=dt_;
