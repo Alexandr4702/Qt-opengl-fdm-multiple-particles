@@ -20,6 +20,11 @@ GL_CUBE::GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_):Body(ctx_),inde
     init_geometry();
 }
 
+void GL_CUBE::set_cam(QMatrix4x4* cam_)
+{
+    cam=cam_;
+}
+
 GL_CUBE::GL_CUBE(const GL_CUBE &other):Body(other),indexBuf(QOpenGLBuffer::IndexBuffer)
 {
     ctx->makeCurrent();
@@ -154,10 +159,11 @@ void GL_CUBE::draw()
 
     Model_View.setToIdentity();
     Model_View.translate(position);
-    Model_View.rotate(orenation.scalar(),orenation.vector());
+    Model_View.rotate(orenation);
     Model_View.scale(scale);
 
-    QMatrix4x4 test=*Projection*Model_View;
+
+    QMatrix4x4 test=*Projection*(*cam)*Model_View;
 
     program->setUniformValue("mvp_matrix",test);
 

@@ -18,8 +18,7 @@ Body::Body(const Body &other)
     angular_acceleration=other.angular_acceleration;
     linear_acclereation=other.linear_acclereation;
 
-    force=other.force;
-    torque=other.torque;
+
 
     density=other.density;
     Volume=other.Volume;
@@ -40,8 +39,7 @@ Body::Body(Body &&other) noexcept
     angular_acceleration=other.angular_acceleration;
     linear_acclereation=other.linear_acclereation;
 
-    force=other.force;
-    torque=other.torque;
+
 
     density=other.density;
     Volume=other.Volume;
@@ -65,8 +63,6 @@ Body &Body::operator=(const Body &other)
     angular_acceleration=other.angular_acceleration;
     linear_acclereation=other.linear_acclereation;
 
-    force=other.force;
-    torque=other.torque;
 
     density=other.density;
     Volume=other.Volume;
@@ -90,8 +86,6 @@ Body &Body::operator=(Body &&other) noexcept
     angular_acceleration=other.angular_acceleration;
     linear_acclereation=other.linear_acclereation;
 
-    force=other.force;
-    torque=other.torque;
 
     density=other.density;
     Volume=other.Volume;
@@ -127,15 +121,7 @@ void Body::setPosition(const QVector3D &value)
     position = value;
 }
 
-QVector3D Body::getTorque() const
-{
-    return torque;
-}
 
-void Body::setTorque(const QVector3D &value)
-{
-    torque = value;
-}
 
 void Body::init_geometry()
 {
@@ -152,20 +138,16 @@ void Body::set_projection(QMatrix4x4 *)
 
 }
 
+void Body::set_cam(QMatrix4x4 *)
+{
+
+}
+
 void Body::set_context(QGLContext *ctx_)
 {
     ctx=ctx_;
 }
 
-QVector3D Body::getForce() const
-{
-    return force;
-}
-
-void Body::setForce(const QVector3D &value)
-{
-    force = value;
-}
 
 QVector3D Body::getLinear_acclereation() const
 {
