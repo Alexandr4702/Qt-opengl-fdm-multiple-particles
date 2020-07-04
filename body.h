@@ -2,7 +2,7 @@
 #define BODY_H
 #include <QVector3D>
 #include <QQuaternion>
-
+#include <QMatrix3x3>
 
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
@@ -16,23 +16,29 @@ public:
     Body(Body&& other)noexcept;
     Body& operator=(const Body & other);
     Body& operator=(Body&& other)noexcept;
-    QVector3D position;
-    QQuaternion orenation;
-    QVector3D scale;
+    QVector3D position=QVector3D(0,0,0);
+    QQuaternion orenation=QQuaternion(1,0,0,0);
+    QVector3D scale=QVector3D(1,1,1);
 
-    QVector3D linear_velocity;
-    QVector3D angular_velocity;
+    QVector3D linear_velocity=QVector3D(0,0,0);
+    QVector3D angular_velocity=QVector3D(0,0,0);
 
 
-    QVector3D angular_acceleration;
-    QVector3D linear_acclereation;
+    QVector3D angular_acceleration=QVector3D(0,0,0);
+    QVector3D linear_acclereation=QVector3D(0,0,0);
 
-    QVector3D force;
-    QVector3D torque;
+    QVector <QVector3D> temporary_forces;
 
-    double density;
-    double Volume;
-    double mass;
+    QVector3D force_summ=QVector3D(0,0,0);
+    QVector <QVector3D> forces;
+    QVector3D torque_summ=QVector3D(0,0,0);
+    QVector <QVector3D> torques;
+
+    double density=1;
+    double Volume=1;
+    double mass=1;
+    QMatrix3x3 J;
+
 
 
     void set_location(const QVector3D& location);
@@ -63,6 +69,7 @@ public:
     virtual void init_geometry();
     virtual void draw();
     virtual void set_projection(QMatrix4x4*);
+    virtual void set_cam(QMatrix4x4*);
     void set_context(QGLContext* ctx_);
     QGLContext* ctx=nullptr;
 

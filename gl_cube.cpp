@@ -8,7 +8,6 @@ GL_CUBE::~GL_CUBE()
 {
     arrayBuf.destroy();
     indexBuf.destroy();
-    qDebug()<<"destrucor \r\n";
 }
 
 GL_CUBE::GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_):Body(ctx_),indexBuf(QOpenGLBuffer::IndexBuffer),
@@ -19,8 +18,11 @@ GL_CUBE::GL_CUBE(QOpenGLShaderProgram *program,QGLContext* ctx_):Body(ctx_),inde
     indexBuf.create();
 
     init_geometry();
-    qDebug()<<"main contructor \r\n";
+}
 
+void GL_CUBE::set_cam(QMatrix4x4* cam_)
+{
+    cam=cam_;
 }
 
 GL_CUBE::GL_CUBE(const GL_CUBE &other):Body(other),indexBuf(QOpenGLBuffer::IndexBuffer)
@@ -35,9 +37,6 @@ GL_CUBE::GL_CUBE(const GL_CUBE &other):Body(other),indexBuf(QOpenGLBuffer::Index
     Model_View=other.Model_View;
     Projection=other.Projection;
     program=other.program;
-
-    qDebug()<<"copy contructor \r\n";
-
 }
 
 GL_CUBE::GL_CUBE(GL_CUBE &&other) noexcept
@@ -56,9 +55,6 @@ GL_CUBE::GL_CUBE(GL_CUBE &&other) noexcept
 
     other.arrayBuf.destroy();
     other.indexBuf.destroy();
-
-    qDebug()<<"move contructor \r\n";
-
 }
 
 GL_CUBE &GL_CUBE::operator=(const GL_CUBE &other)
@@ -70,8 +66,6 @@ GL_CUBE &GL_CUBE::operator=(const GL_CUBE &other)
     Model_View=other.Model_View;
     Projection=other.Projection;
     program=other.program;
-
-    qDebug()<<"copy assigned \r\n";
 
     return *this;
 }
@@ -89,8 +83,6 @@ GL_CUBE &GL_CUBE::operator=(GL_CUBE &&other) noexcept
 
     other.arrayBuf.destroy();
     other.indexBuf.destroy();
-
-    qDebug()<<"move assigned \r\n";
 
     return *this;
 }
@@ -167,10 +159,11 @@ void GL_CUBE::draw()
 
     Model_View.setToIdentity();
     Model_View.translate(position);
-    Model_View.rotate(orenation.scalar(),orenation.vector());
+    Model_View.rotate(orenation);
     Model_View.scale(scale);
 
-    QMatrix4x4 test=*Projection*Model_View;
+
+    QMatrix4x4 test=*Projection*(*cam)*Model_View;
 
     program->setUniformValue("mvp_matrix",test);
 

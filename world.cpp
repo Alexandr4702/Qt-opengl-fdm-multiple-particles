@@ -11,34 +11,87 @@ World::World(QGLContext* ctx)
 
 void World::update(float dt_)
 {
-    for(Body body:bodies)
+    for(Body* body:bodies)
     {
-                body.setPosition(QVector3D(0,0,-20));
-                body.set_orenatation(QQuaternion(time,0.0f,0.0f,1.0f));
+        body->temporary_forces.clear();
+
+
+
+        for (Body* body_test:bodies )
+        {
+                QVector3D r=(body->position-body_test->position);
+                if(r.length()==0)
+                {
+                    continue;;
+                }
+                QVector3D F=-body->mass*body_test->mass*r;
+                body->temporary_forces.push_back(F/r.length()/r.length());
+//                qDebug()<<F/r.length()<<r.length()<<r;
+        }
+//        if(body->position.y()<-5)
+//        {
+//            body->linear_velocity=-body->linear_velocity;
+//        }
+
+        body->force_summ=QVector3D(0,0,0);
+
+        for(QVector3D force :body->temporary_forces)
+        {
+            body->force_summ+=force;
+        }
+
+        for(QVector3D force :body->forces)
+        {
+            body->force_summ+=force;
+        }
+
+        body->torque_summ=QVector3D(0,0,0);
+        for(QVector3D torque :body->torques)
+        {
+            body->torque_summ+=torque;
+        }
+
+         body->linear_acclereation=body->force_summ/body->mass;
+         body->linear_velocity+=body->linear_acclereation*dt_;
+
+
+
+//         body->angular_acceleration=;
+        body->angular_velocity+=body->angular_acceleration*dt_;
+
+         float omega=body->angular_velocity.length();
+         QQuaternion M(cosf(omega*dt_/2.0f),sinf(omega*dt_/2.0f)*body->angular_velocity);
+         M.normalize();
+         body->orenation=M*body->orenation;
+         body->position+=body->linear_velocity*dt;
 
     }
+    cam.setToIdentity();
+    cam.lookAt(QVector3D(0,0,20),bodies[0]->position,QVector3D(0,1,0));
+
+
     time+=dt_;
 
 }
 
 void World::update()
 {
-    for(Body body:bodies)
+    for(Body* body:bodies)
     {
-                body.setPosition(QVector3D(0,0,-10));
-                body.set_orenatation(QQuaternion(time*1000,1.0f,0.0f,0.0f));
-                body.setScale(QVector3D(1,1,2));
+                body->setPosition(QVector3D(0,0,-10));
+                body->set_orenatation(QQuaternion(time*1000,1.0f,0.0f,0.0f));
+                body->setScale(QVector3D(1,1,2));
     }
     time+=dt;
 }
 
 void World::draw()
 {
-    update();
+    update(dt);
 
-    for(Body body:bodies)
+    for(Body* body:bodies)
     {
-        body.draw();
+        body->draw();
     }
 }
 
@@ -46,9 +99,9 @@ void World::draw(QMatrix4x4 &projection_matrix)
 {
     Q_UNUSED(projection_matrix);
 
-    for(Body body:bodies)
+    for(Body* body:bodies)
     {
-        body.draw();
+        body->draw();
     }
 }
 
@@ -86,14 +139,10 @@ QOpenGLShaderProgram* World::getShader_position_orentation_programm()
 
 
 
-void World::add_body(Body & body)
+void World::add_body(Body * body)
 {
-    body.set_projection(&Projection);
-    bodies.push_back(body);
-}
+    body->set_projection(&Projection);
+    body->set_cam(&cam);
 
-void World::add_body(Body && body)
-{
-    body.set_projection(&Projection);
     bodies.push_back(body);
 }
