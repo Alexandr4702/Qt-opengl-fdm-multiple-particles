@@ -32,6 +32,10 @@ private:
     QMatrix4x4* Projection;
     QMatrix4x4* cam;
     QOpenGLShaderProgram* program;
+    int vertexLocation;
+//-----------------------------------------------------------------
+     QVector<QVector3D> ver;
+     QVector <GLushort> indeces;
 };
 
 

@@ -2,6 +2,7 @@
 QT+=widgets
 QT+=opengl
 QT += gui
+QT+=core
 
 
 SOURCES += \
