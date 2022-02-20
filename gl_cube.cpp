@@ -1,6 +1,7 @@
 #include "gl_cube.h"
 #include <QGLWidget>
 #include <QtOpenGL>
+#include <iostream>
 
 GL_CUBE::~GL_CUBE()
 {
@@ -88,7 +89,7 @@ void GL_CUBE::init_geometry()
 {
     if(indeces.size() == 0)
     {
-        QFile fl("/home/gilg/blender/sphere.obj");
+        QFile fl("./sphere.obj");
         if(!fl.open(QIODevice::OpenModeFlag::ReadOnly))
         {
             perror("Can't open file\n");
@@ -105,7 +106,7 @@ void GL_CUBE::init_geometry()
                     int result = sscanf(line.data() + 1, "%f %f %f", data, data + 1, data + 2);
                     if(result != 3)
                     {
-                        perror("Error while reading obj file\r\n");
+                        std::cerr << "Error while reading obj file " << result << "\r\n" << std::endl;
                         exit(-1);
                     }
                     QVector3D vertex(data[0], data[1], data[2]);
@@ -117,7 +118,7 @@ void GL_CUBE::init_geometry()
                     int result = sscanf(line.data() + 1, "%hu %hu %hu", data, data + 1, data + 2);
                     if(result != 3)
                     {
-//                        std::cerr << "Error while reading obj file\r\n" << std::endl;
+                        std::cerr << "Error while reading obj file " << result << " \r\n" << std::endl;
                         exit(-1);
                     }
                     indeces.push_back(data[0] - 1);
