@@ -2,8 +2,6 @@
 #include <QGLWidget>
 #include <QtOpenGL>
 
-
-
 GL_CUBE::~GL_CUBE()
 {
     arrayBuf.destroy();
@@ -32,11 +30,11 @@ GL_CUBE::GL_CUBE(const GL_CUBE &other):Body(other),indexBuf(QOpenGLBuffer::Index
     arrayBuf.create();
     indexBuf.create();
 
-    arrayBuf=other.arrayBuf;
-    indexBuf=other.indexBuf;
-    Model_View=other.Model_View;
-    Projection=other.Projection;
-    program=other.program;
+    arrayBuf = other.arrayBuf;
+    indexBuf = other.indexBuf;
+    Model_View = other.Model_View;
+    Projection = other.Projection;
+    program = other.program;
 }
 
 GL_CUBE::GL_CUBE(GL_CUBE &&other) noexcept
@@ -47,11 +45,11 @@ GL_CUBE::GL_CUBE(GL_CUBE &&other) noexcept
     arrayBuf.create();
     indexBuf.create();
 
-    arrayBuf=other.arrayBuf;
-    indexBuf=other.indexBuf;
-    Model_View=other.Model_View;
-    Projection=other.Projection;
-    program=other.program;
+    arrayBuf = other.arrayBuf;
+    indexBuf = other.indexBuf;
+    Model_View = other.Model_View;
+    Projection = other.Projection;
+    program = other.program;
 
     other.arrayBuf.destroy();
     other.indexBuf.destroy();
@@ -61,11 +59,11 @@ GL_CUBE &GL_CUBE::operator=(const GL_CUBE &other)
 {
     if (this == &other)
         return *this;
-    arrayBuf=other.arrayBuf;
-    indexBuf=other.indexBuf;
-    Model_View=other.Model_View;
-    Projection=other.Projection;
-    program=other.program;
+    arrayBuf = other.arrayBuf;
+    indexBuf = other.indexBuf;
+    Model_View = other.Model_View;
+    Projection = other.Projection;
+    program = other.program;
 
     return *this;
 }
@@ -74,51 +72,57 @@ GL_CUBE &GL_CUBE::operator=(GL_CUBE &&other) noexcept
 {
     if (this == &other)
         return *this;
-    arrayBuf=other.arrayBuf;
-    indexBuf=other.indexBuf;
-    Model_View=other.Model_View;
-    Projection=other.Projection;
-    program=other.program;
-
+    arrayBuf = other.arrayBuf;
+    indexBuf = other.indexBuf;
+    Model_View = other.Model_View;
+    Projection = other.Projection;
+    program = other.program;
 
     other.arrayBuf.destroy();
     other.indexBuf.destroy();
-
     return *this;
 }
 
 
 void GL_CUBE::init_geometry()
 {
-
-
-    if(indeces.size()==0)
+    if(indeces.size() == 0)
     {
         QFile fl("/home/gilg/blender/sphere.obj");
-        if(!fl.open(QIODevice::ReadOnly))exit(234);
+        if(!fl.open(QIODevice::OpenModeFlag::ReadOnly))
+        {
+            perror("Can't open file\n");
+            exit(-1);
+        }
         else
         {
             while (!fl.atEnd())
             {
                 QByteArray line = fl.readLine();
-                if(line[0]=='v')
+                if(line[0] == 'v')
                 {
                     float data[3];
-                    int asd= sscanf(line.data()+1,"%f %f %f",data,data+1,data+2);
-                    if(asd!=3)exit(1);
-                    QVector3D vertex(data[0],data[1],data[2]);
+                    int result = sscanf(line.data() + 1, "%f %f %f", data, data + 1, data + 2);
+                    if(result != 3)
+                    {
+                        perror("Error while reading obj file\r\n");
+                        exit(-1);
+                    }
+                    QVector3D vertex(data[0], data[1], data[2]);
                     ver.push_back(vertex);
-    //                qDebug()<<vertex<<line<<asd;
                 }
-                if(line[0]=='f')
+                if(line[0] == 'f')
                 {
                     GLushort data[3];
-                    int asd= sscanf(line.data()+1,"%hu %hu %hu",data,data+1,data+2);
-                    if(asd!=3)exit(1);
-                    indeces.push_back(data[0]-1);
-                    indeces.push_back(data[1]-1);
-                    indeces.push_back(data[2]-1);
-    //                qDebug()<<data[0]<<data[1]<<data[2]<<line<<asd;
+                    int result = sscanf(line.data() + 1, "%hu %hu %hu", data, data + 1, data + 2);
+                    if(result != 3)
+                    {
+//                        std::cerr << "Error while reading obj file\r\n" << std::endl;
+                        exit(-1);
+                    }
+                    indeces.push_back(data[0] - 1);
+                    indeces.push_back(data[1] - 1);
+                    indeces.push_back(data[2] - 1);
                 }
             }
             fl.close();
@@ -128,10 +132,7 @@ void GL_CUBE::init_geometry()
         qDebug()<<"import \r\n";
     }
 
-
-
 //! [1]
-
     arrayBuf.bind();
     arrayBuf.allocate(ver.data(), ver.size() * sizeof(QVector3D));
 
@@ -139,7 +140,6 @@ void GL_CUBE::init_geometry()
     indexBuf.allocate(indeces.data(), indeces.size() * sizeof(GLushort));
     //! [1]
     vertexLocation = program->attributeLocation("a_position");
-
 }
 
 void GL_CUBE::set_projection(QMatrix4x4 * projection_)
@@ -150,12 +150,10 @@ void GL_CUBE::set_projection(QMatrix4x4 * projection_)
 
 void GL_CUBE::draw()
 {
-
     Model_View.setToIdentity();
     Model_View.translate(position);
     Model_View.rotate(orenation);
     Model_View.scale(scale);
-
 
     QMatrix4x4 test=*Projection*(*cam)*Model_View;
 

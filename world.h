@@ -33,23 +33,21 @@ public:
     QVector3D cam_up;
     QMatrix4x4 cam;
 
-    float K=0;//kinetic_e
-    float U=0;//pot e
-    float E=0;
+    float K = 0;//kinetic_e
+    float U = 0;//pot e
+    float E = 0;
 
     QVector<float> forces;
     QVector<Body*> bodies;
     QMatrix4x4 Projection;
-    float dt=1e-8;
-    float time=0.0f;
+    float dt = 1e-8;
+    float time = 0.0f;
     QOpenGLShaderProgram shader_position_orentation_programm;
     QOpenGLShaderProgram* getShader_position_orentation_programm() ;
     QMatrix4x4* getProjection();
     void setProjection(const QMatrix4x4 &value);
     QGLContext* ctx;
     QThread* calculation;
-
-
 };
 
 #endif // WORLD_H

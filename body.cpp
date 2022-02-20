@@ -7,39 +7,31 @@ Body::Body(QGLContext* ctx_):ctx(ctx_)
 
 Body::Body(const Body &other)
 {
-    position=other.position;
-    orenation=other.orenation;
-    scale=other.scale;
+    position = other.position;
+    orenation = other.orenation;
+    scale = other.scale;
 
-    linear_velocity=other.linear_velocity;
-    angular_velocity=other.angular_velocity;
+    linear_velocity = other.linear_velocity;
+    angular_velocity = other.angular_velocity;
 
-
-    angular_acceleration=other.angular_acceleration;
-    linear_acclereation=other.linear_acclereation;
-
-
-
-    density=other.density;
-    Volume=other.Volume;
-    mass=other.mass;
-    ctx=other.ctx;
+    angular_acceleration = other.angular_acceleration;
+    linear_acclereation = other.linear_acclereation;
+    density = other.density;
+    Volume = other.Volume;
+    mass = other.mass;
+    ctx = other.ctx;
 }
 
 Body::Body(Body &&other) noexcept
 {
-    position=other.position;
-    orenation=other.orenation;
-    scale=other.scale;
-
-    linear_velocity=other.linear_velocity;
-    angular_velocity=other.angular_velocity;
-
+    position = other.position;
+    orenation = other.orenation;
+    scale = other.scale;
+    linear_velocity = other.linear_velocity;
+    angular_velocity = other.angular_velocity;
 
     angular_acceleration=other.angular_acceleration;
     linear_acclereation=other.linear_acclereation;
-
-
 
     density=other.density;
     Volume=other.Volume;
@@ -59,10 +51,8 @@ Body &Body::operator=(const Body &other)
     linear_velocity=other.linear_velocity;
     angular_velocity=other.angular_velocity;
 
-
     angular_acceleration=other.angular_acceleration;
     linear_acclereation=other.linear_acclereation;
-
 
     density=other.density;
     Volume=other.Volume;
@@ -82,17 +72,14 @@ Body &Body::operator=(Body &&other) noexcept
     linear_velocity=other.linear_velocity;
     angular_velocity=other.angular_velocity;
 
-
     angular_acceleration=other.angular_acceleration;
     linear_acclereation=other.linear_acclereation;
-
 
     density=other.density;
     Volume=other.Volume;
     mass=other.mass;
     ctx=other.ctx;
     return *this;
-
 }
 
 QVector3D Body::getScale() const

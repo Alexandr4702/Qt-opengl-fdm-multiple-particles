@@ -8,6 +8,5 @@ int main(int argc,char **argv )
     Qmainwindows_ MainWindow;
     MainWindow.show();
 
-
     return a.exec();
 }

@@ -23,9 +23,7 @@ public:
     void init_geometry ()override;
     void set_projection(QMatrix4x4*)override;
     void set_cam(QMatrix4x4*)override;
-
 private:
-
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
     QMatrix4x4 Model_View;
