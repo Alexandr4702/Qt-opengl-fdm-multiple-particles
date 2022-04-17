@@ -2,7 +2,22 @@
 
 Body::Body(QGLContext* ctx_):ctx(ctx_)
 {
+    Assimp::Importer importer;
+    QString pathToFile;
 
+    const aiScene* scene = importer.ReadFile(pathToFile.toStdString(),
+            aiProcess_GenSmoothNormals |
+            aiProcess_CalcTangentSpace |
+            aiProcess_Triangulate |
+            aiProcess_JoinIdenticalVertices |
+            aiProcess_SortByPType
+            );
+
+    if (!scene)
+    {
+        qDebug() << "Error loading file: (assimp:) " << importer.GetErrorString();
+        return;
+    }
 }
 
 Body::Body(const Body &other)

@@ -22,3 +22,5 @@ RESOURCES += \
     Shaders.qrc \
 
 DISTFILES +=
+
+LIBS += lassimp
