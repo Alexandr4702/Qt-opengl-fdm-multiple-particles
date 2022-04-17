@@ -3,7 +3,6 @@
 
 #include <QGLWidget>
 #include <QtOpenGL>
-#include "gl_cube.h"
 #include "world.h"
 
 class GL_GAME: public QGLWidget
@@ -17,7 +16,7 @@ protected:
     void paintGL();
     void initShader();
 private:
-    GL_CUBE* Cube;
+    Body* Cube;
     World* world;
 
 };

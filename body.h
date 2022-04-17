@@ -8,7 +8,11 @@
 #include <QOpenGLBuffer>
 #include <QGLContext>
 
-//#include <eigen3/Eigen/
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/Importer.hpp>
+
+#include <eigen3/Eigen/Core>
 
 class Body
 {
@@ -16,32 +20,30 @@ public:
     Body(QGLContext* ctx_);
     Body(const Body& other);
     Body(Body&& other)noexcept;
-    Body& operator=(const Body & other);
-    Body& operator=(Body&& other)noexcept;
-    QVector3D position=QVector3D(0,0,0);
-    QQuaternion orenation=QQuaternion(1,0,0,0);
-    QVector3D scale=QVector3D(1,1,1);
+    Body& operator = (const Body & other);
+    Body& operator = (Body&& other)noexcept;
 
-    QVector3D linear_velocity=QVector3D(0,0,0);
-    QVector3D angular_velocity=QVector3D(0,0,0);
+    QVector3D position = QVector3D(0,0,0);
+    QQuaternion orenation = QQuaternion(1,0,0,0);
+    QVector3D scale = QVector3D(1,1,1);
 
+    QVector3D linear_velocity = QVector3D(0,0,0);
+    QVector3D angular_velocity = QVector3D(0,0,0);
 
-    QVector3D angular_acceleration=QVector3D(0,0,0);
-    QVector3D linear_acclereation=QVector3D(0,0,0);
+    QVector3D angular_acceleration = QVector3D(0,0,0);
+    QVector3D linear_acclereation = QVector3D(0,0,0);
 
     QVector <QVector3D> temporary_forces;
 
-    QVector3D force_summ=QVector3D(0,0,0);
+    QVector3D force_summ = QVector3D(0,0,0);
     QVector <QVector3D> forces;
-    QVector3D torque_summ=QVector3D(0,0,0);
+    QVector3D torque_summ = QVector3D(0,0,0);
     QVector <QVector3D> torques;
 
-    double density=1;
-    double Volume=1;
-    double mass=1;
+    double density = 1;
+    double Volume = 1;
+    double mass = 1;
     QMatrix3x3 J;
-
-
 
     void set_location(const QVector3D& location);
     void set_orenatation(const QQuaternion& oreantation);
@@ -73,10 +75,7 @@ public:
     virtual void set_projection(QMatrix4x4*);
     virtual void set_cam(QMatrix4x4*);
     void set_context(QGLContext* ctx_);
-    QGLContext* ctx=nullptr;
-
-
-
+    QGLContext* ctx = nullptr;
 };
 
 #endif // BODY_H
