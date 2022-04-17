@@ -20,17 +20,17 @@ void GL_GAME::initializeGL()
     glEnable(GL_DEPTH_TEST);
     world = new World(context());
 
-    Body* ptr= new GL_CUBE(
-                &world->shader_position_orentation_programm, context());
+//    Body* ptr= new GL_CUBE(
+//                &world->shader_position_orentation_programm, context());
 
-    ptr->setPosition(QVector3D(0,0,-10));
-//    ptr->forces.push_back(QVector3D(0,0,10));
-    ptr->angular_velocity=QVector3D(0,5,0);
-    ptr->linear_acclereation=QVector3D(0,0,0);
-    ptr->setMass(2000000);
-    ptr->setScale(QVector3D(10,1,10));
-    ptr->J.setToIdentity();
-    world->add_body(ptr);
+//    ptr->setPosition(QVector3D(0,0,-10));
+////    ptr->forces.push_back(QVector3D(0,0,10));
+//    ptr->angular_velocity=QVector3D(0,5,0);
+//    ptr->linear_acclereation=QVector3D(0,0,0);
+//    ptr->setMass(2000000);
+//    ptr->setScale(QVector3D(10,1,10));
+//    ptr->J.setToIdentity();
+//    world->add_body();
 }
 
 void GL_GAME::paintGL()

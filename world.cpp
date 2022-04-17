@@ -104,7 +104,7 @@ void World::draw()
 //    fprintf(stderr,"hello draw \r\n");
 
     cam.setToIdentity();
-    cam.lookAt(bodies[0]->position-QVector3D(0,-20,-100), bodies[0]->position, QVector3D(0,1,0));
+//    cam.lookAt(bodies[0]->position-QVector3D(0,-20,-100), bodies[0]->position, QVector3D(0,1,0));
     for(Body* body:bodies)
     {
         body->draw();
